@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+	.edit:hover
+	{
+		color:blue;
+	}
+	.delete:hover
+	{
+	  color:red;
+	}
+	.create
+	{
+  		margin-left:4%;
+	}
+	.header
+	{
+  		/*background-color:	#696969;
+		   padding:100px; */
+		   background-image:url('images.jpg');
+		   background-size:cover;
+	}
+  </style>
+ </head>
+<body class="header">
+	<div style="text-align:center;">
+        <h2 style="color: white">CRUD Operation</h2>
+    </div>
+  	<div>
+    	<div>
+      		<button id="myBtn" style="background-color:#00BFFF;">&emsp; Create &emsp;</button>
+    	</div>
+    	<div style="display:none;" id="tableList">
+        	<table id="tasksTable">
+            	<thead>
+                	<tr style="background-color:#B2B0AF">
+                    	<th style="width: 150px;color:white;">Country</th>
+                    	<th style="width: 250px;color:white;">Description</th>
+                    	<th colspan="2" style="width: 120px;color:white;">Action</th>
+                	</tr>
+            	</thead>
+            	<tbody></tbody>
+        	</table>
+    	</div>
+    	<div id="myModal" class="modal" style="display:none;">
+        	<div class="modal-content">
+				<div class="modal-header">
+                	<h3 class="create" style="color:white;"> Name & Description</h3>
+            	</div>
+            	<div class="modal-body">
+                	<table style="padding: 28px 50px">
+                    	<tr>
+                        	<td style="width:150px; color:white;">Country:</td>
+                        	<td><input type="text" name="country" id="countryName" style="width:99%"></td>
+                    	</tr>
+                    	<tr>
+                        	<td style="color:white;">
+                            	Description:
+                        	</td>
+                        	<td>
+                            	<textarea name="description" id="countryDescription" cols="60" rows="10"></textarea>
+                        	</td>
+                    	</tr>
+                	</table>
+            	</div>
+            	<div class="modal-footer">
+                	<button type="submit" value="submit" class="btn btn-success" style="margin-left:25%;" onclick="addTasks()" id="saveButton" >SAVE</button>
+                	<button type="submit" value="submit" class="btn btn-info" style="margin-left:25%;display:none" onclick="updateTasks()" id="updateButton">UPDATE</button> 
+                	<br>
+                	<br>
+                	<br>
+            	</div>
+        	</div>
+    	</div>
+  	</div>
+    <script>
+		var updateRowCount = 0;
+		var rowCount = 1;
+		// Get the modal
+		var modal = document.getElementById('myModal');
+		// Get the button that opens the modal
+		var btn = document.getElementById("myBtn");
+		// When the user clicks the button, open the modal 
+		btn.onclick = function() {
+    		modal.style.display = "block";
+    		document.getElementById("tableList").style.display = "none";
+		}
+
+		function addTasks() {
+    		var table = document.getElementById("tasksTable");
+    		var row = table.insertRow(rowCount);
+    		row.id = 'tableRow_' + rowCount;
+    		var cell1 = row.insertCell(0);
+    		cell1.style.textAlign = "center";
+			cell1.style.color="white";
+    		cell1.id = 'name_' + rowCount;
+    		var cell2 = row.insertCell(1);
+    		cell2.style.textAlign = "center";
+			cell2.style.color="white";
+            cell2.id = 'desc_' + rowCount;
+            var cell3 = row.insertCell(2);
+            cell3.style.textAlign = "center";
+			cell3.style.color="white";
+            cell1.innerHTML = document.getElementById("countryName").value;
+            cell2.innerHTML = document.getElementById("countryDescription").value;
+            cell3.innerHTML = '<td><a class=edit id="edit_' + rowCount + '" onclick="editRow(' + rowCount + ')">Edit</a></td>&nbsp;&nbsp;<td ><a id=delete_' + rowCount + ' class="delete" onclick="delete_row(' + rowCount + ')">Delete</a></td>';
+            rowCount++;
+            document.getElementById("countryName").value = "";
+            document.getElementById("countryDescription").value = "";
+            document.getElementById("tableList").style.display = "block";
+            modal.style.display = "none";
+		}
+
+		function updateTasks() {
+    		document.getElementById("name_" + updateRowCount).innerHTML = document.getElementById("countryName").value;
+            document.getElementById("desc_" + updateRowCount).innerHTML = document.getElementById("countryDescription").value;
+            updateRowCount = 0;
+            document.getElementById("tableList").style.display = "block";
+            modal.style.display = "none";
+            document.getElementById("saveButton").style.display = "block";
+            document.getElementById("updateButton").style.display = "none";
+            document.getElementById("countryName").value = "";
+            document.getElementById("countryDescription").value = "";
+        }
+
+		function delete_row(_rowCount) {
+          document.getElementById('tableRow_' + _rowCount).outerHTML = "";
+          rowCount--;
+        }
+
+		function editRow(_rowCount) {
+          document.getElementById("countryName").value = document.getElementById("name_" + _rowCount).innerText;
+          document.getElementById("countryDescription").value = document.getElementById("desc_" + _rowCount).innerText;
+          updateRowCount = _rowCount;
+          document.getElementById("tableList").style.display = "none";
+          document.getElementById("saveButton").style.display = "none";
+          document.getElementById("updateButton").style.display = "block";
+          modal.style.display = "block";
+		}
+    </script>
+</body>
+</html>
